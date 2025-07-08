@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>対局時計</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    .player { margin: 20px; font-size: 2em; }
+    button { padding: 10px 20px; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>囲碁・将棋 対局時計</h1>
 
+  <div class="player" id="player1">10:00</div>
+  <div class="player" id="player2">10:00</div>
+
+  <button onclick="startPlayer(1)">Player 1</button>
+  <button onclick="startPlayer(2)">Player 2</button>
+
+  <script>
+    let timers = [600, 600]; // 600秒 = 10分
+    let currentPlayer = null;
+    let intervalId = null;
+
+    function startPlayer(playerIndex) {
+      clearInterval(intervalId);
+      currentPlayer = playerIndex - 1;
+      intervalId = setInterval(() => {
+        timers[currentPlayer]--;
+        if (timers[currentPlayer] <= 0) {
+          clearInterval(intervalId);
+          alert(`Player ${playerIndex} の時間切れ！`);
+        }
+        document.getElementById(`player${playerIndex}`).textContent =
+          formatTime(timers[currentPlayer]);
+      }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+  </script>
+</body>
+</html>
